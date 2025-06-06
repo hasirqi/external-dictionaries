@@ -1,0 +1,51 @@
+{
+  "name": "external-dictionaries",
+  "version": "1.0.0",
+  "description": "权威英文词库批量解析与数据库化工具 - 支持GCIDE、Oxford 3000/5000等主流词典",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "parse-gcide": "node scriptsparse-dictionaries/parse-gcide.js",
+    "parse-oxford": "node scriptsparse-dictionaries/parse-american-oxford-3000-improved.js",
+    "fix-oxford": "node scriptsparse-dictionaries/fix-the-oxford-3000-5000.js",
+    "merge": "node scriptsparse-dictionaries/merge-to-db.js",
+    "studio": "npx prisma studio",
+    "postinstall": "npx prisma generate"
+  },
+  "keywords": [
+    "dictionary",
+    "oxford",
+    "gcide",
+    "wordnet",
+    "sqlite",
+    "english",
+    "vocabulary",
+    "cefr",
+    "pdf-parser",
+    "language-learning"
+  ],
+  "author": "hasirqi",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hasirqi/external-dictionaries.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hasirqi/external-dictionaries/issues"
+  },
+  "homepage": "https://github.com/hasirqi/external-dictionaries#readme",
+  "dependencies": {
+    "@prisma/client": "^6.9.0",
+    "better-sqlite3": "^11.10.0",
+    "pdf-parse": "^1.1.1",
+    "sqlite3": "^5.1.7",
+    "tar": "^7.4.3",
+    "xml2js": "^0.6.2"
+  },
+  "devDependencies": {
+    "prisma": "^6.9.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

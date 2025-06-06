@@ -1,0 +1,83 @@
+这是一个“独立下载+本地解析+数据补全”的全新技术方案，适合你在不影响现有项目的情况下，批量获取权威词库数据并用于数据库补全。方案分为三步：
+
+---
+
+## 1. 词库下载方案
+
+### WordNet
+- 官网：httpswordnet.princeton.edudownload
+- 直接下载 [WordNet 3.1 Prolog files](httpswordnetcode.princeton.edu3.1WNprolog-3.1.tar.gz) 或 [WordNet 3.1 Database files](httpswordnetcode.princeton.edu3.1WNdb-3.1.tar.gz)
+- 解压后为TXT数据库格式，适合脚本解析。
+
+### GCIDE
+- 官网：httpsgcide.gnu.org.uadownload.html
+- 直接下载 [GCIDE XML](httpsftp.gnu.orggnugcidegcide-0.53.tar.xz)
+- 解压后为XML格式，适合用Node.jsxml2js等库解析。
+
+### Oxford 30005000
+- 官方不直接开放下载，但可在[牛津官网](httpswww.oxfordlearnersdictionaries.comwordlistenglishoxford3000)页面爬取，或在GitHub等开源项目中找到整理版CSVJSON（如[oxford-3000](httpsgithub.commahavivooxford3000)）。
+- 建议用爬虫或直接下载整理版CSV。
+
+### Open Multilingual Wordnet
+- 官网：httpscompling.upf.eduomw
+- 直接下载 https://github.com/globalwordnet/OMW（含多语言释义，TSV格式）
+
+### Free Dictionary API
+- 官网：httpsdictionaryapi.dev
+- 不支持直接批量下载，但可用脚本批量请求API，保存为本地JSON。
+
+---
+
+## 2. 技术实现建议
+
+### 新建 `external-dictionaries` 文件夹
+- 用于存放所有下载的原始词库文件（如 `wordnet`, `gcide`, `omw`, `oxford3000.csv` 等）
+
+### 新建 `scriptsparse-dictionaries` 目录
+- 编写 Node.js 脚本，分别解析各类词库（如 `parse-wordnet.js`, `parse-gcide.js`, `parse-omw.js`）
+- 解析后生成统一格式的中间JSON文件（如 `all-words-merged.json`）
+
+### 新建 `scriptsmerge-to-db.js`
+- 读取本地数据库和中间JSON
+- 对比并补全缺失字段，调用 `prisma.word.update` 写入
+
+---
+
+## 3. 示例操作流程
+
+1. 下载词库并解压到 `external-dictionaries`
+2. 运行解析脚本（如 `node scriptsparse-dictionariesparse-wordnet.js`），生成 `parsed-wordnet.json`
+3. 运行合并脚本（如 `node scriptsmerge-to-db.js`），补全本地数据库
+
+---
+
+## 4. 依赖推荐
+
+- `node-fetch``axios`：爬取API或网页
+- `xml2js`：解析GCIDE等XML
+- `csv-parse`：解析CSV格式
+- prisma：数据库操作
+
+---
+
+## 5. 目录结构建议
+
+```
+external-dictionaries
+  wordnet
+  gcide
+  omw
+  oxford3000.csv
+scripts
+  parse-dictionaries
+    parse-wordnet.js
+    parse-gcide.js
+    parse-omw.js
+    ...
+  merge-to-db.js
+  ...
+```
+
+---
+
+如需某个词库的具体下载命令、解析脚本模板或合并脚本示例，请指定词库类型，我可直接生成！
