@@ -15,10 +15,14 @@ yarn-error.log*
 /generated/
 /generated/prisma/
 
-# Database files (too large for git)
-*.db
-*.sqlite
-*.sqlite3
+# Database files (too large for git) - 修改为仅排除超大文件
+# *.db  # 注释掉，允许重要的小型数据库文件
+# *.sqlite
+# *.sqlite3
+
+# 排除特定的大型数据库文件
+Raw_data/gcide/gcide-dictionary.db
+Raw_data/gcide/dictionary.db
 
 # Compressed archives
 *.tar.gz
